@@ -1,4 +1,6 @@
-exports.Player = function(){
+exports.Player = function(pId, pName){
+  this.id = pId;
+  this.name = pName;
   this.team = null;
   this.hand = null;
 
