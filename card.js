@@ -1,4 +1,4 @@
-Card = function(pFamily, pValue){
+module.exports.Card = Card = function(pFamily, pValue){
   this.family = pFamily;
   this.value = pValue;
 

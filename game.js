@@ -1,17 +1,19 @@
-Game = function(){
-  this.hands = array();
+module.exports.Game = Game = function(pTeams){
+  this.teams = pTeams;
 
-  addHand = function(pHand){
-    this.hands.push(pHand);
+  this.getTeams = function(){
+    return this.teams;
   };
 
-  getHands = function(){
-    return this.hands;
+  this.orderedPlayers = function(){
+    var result = Array();
+    result.push(this.teams[0].getPlayers()[0]);
+    result.push(this.teams[1].getPlayers()[0]);
+  };
+
+  this.getOrderedPlayers = function(){
+    return this.orderedPlayers;
   };
 
   
-  var teams = [0, 1];
-
-  
-
 };

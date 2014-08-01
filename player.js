@@ -1,15 +1,23 @@
-exports.Player = function(pId, pName){
+module.exports.Player = Player = function(pId, pName, pTeam){
   this.id = pId;
   this.name = pName;
-  this.team = null;
-  this.hand = null;
+  this.team = pTeam;
+  this.cards = null;
+
+  this.setCards = function(pCards){
+    this.cards = pCards;
+  };
+
+  this.getName = function(){
+    return this.name;
+  };
 
   this.getTeam = function(){
     return this.team;
   };
 
-  this.setTeam = function(pTeam){
-    this.team = pTeam;
+  this.getCards = function(){
+    return this.cards;
   };
 
 };

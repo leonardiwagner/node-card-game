@@ -1,4 +1,4 @@
-exports.Team = function(pId){
+module.exports.Team = Team = function(pId){
   this.id = pId;
   this.players = Array();
   this.points = 0;
