@@ -1,0 +1,34 @@
+<html>
+  <head>
+  <title>Truco Of Thrones - Room #1</title>
+  <head>
+  <body>
+
+    <div class="player">
+      <div class="card" data-family="3" data-value="5"></div>
+      <div class="card" data-family="3" data-value="5"></div>
+      <div class="card" data-family="3" data-value="5"></div>
+    </div>
+
+    <div id="table">
+      <div class="card" data-card="0"></div>
+      <div class="card" data-card="1"></div>
+      <div class="card" data-card="2"></div>
+      <div class="card" data-card="4"></div>
+    </div>
+
+    <a href="javascript:sendMessage();">ople</a>
+
+  </body>
+  <script src="/socket.io/socket.io.js"></script>
+  <script>
+    var socket = io();
+
+    function sendMessage(){
+      socket.emit("fooMessage", "valor");
+      return false;
+    }
+    
+
+  </script>
+</html>

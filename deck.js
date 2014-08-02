@@ -1,13 +1,13 @@
 var cardClass = require('./card.js');
 
 module.exports.Deck = Deck = function(){
-  var cardFamilies = [0, 1, 2, 3];
-  var cardPeople = [0, 1, 2, 3, 4, 5, 6, 7];
+  this.cardFamilies = [0, 1, 2, 3];
+  this.cardPeople = [0, 1, 2, 3, 4, 5, 6, 7];
   this.cards = Array();
 
-  for(var f = 0; f < cardFamilies.length; f++){
-    for(var p = 0; p < cardPeople.length; p++){
-      this.cards.push(new Card(cardFamilies[f], cardPeople[p]));
+  for(var f = 0; f < this.cardFamilies.length; f++){
+    for(var p = 0; p < this.cardPeople.length; p++){
+      this.cards.push(new Card(this.cardFamilies[f], this.cardPeople[p]));
     }
   }
 

@@ -2,11 +2,11 @@ module.exports.Card = Card = function(pFamily, pValue){
   this.family = pFamily;
   this.value = pValue;
 
-  getFamily = function(){
+  this.getFamily = function(){
     return this.family;
   };
 
-  getValue = function(){
+  this.getValue = function(){
     return this.value;
   };
 };

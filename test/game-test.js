@@ -3,7 +3,6 @@ var gameClass = require('../game.js');
 var teamClass = require('../team.js');
 var playerClass = require('../player.js');
 
-  
 
   var player1 = new Player(23, "John");
   var player2 = new Player(24, "Gabriel");
