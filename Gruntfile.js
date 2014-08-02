@@ -33,6 +33,6 @@ module.exports = function(grunt){
   grunt.loadNpmTasks('grunt-mocha-test');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jshint','mochaTest']);
+  grunt.registerTask('test', ['mochaTest']);
   grunt.registerTask('default', ['watch']);
 };
