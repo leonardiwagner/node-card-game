@@ -1,6 +1,10 @@
 {
   "name": "node-card-game",
   "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/leonardiwagner/node-card-game.git"
+  },
   "dependencies": {
     "chai": "1.8.1",
     "coveralls": "^2.11.1",
