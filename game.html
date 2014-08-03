@@ -18,17 +18,38 @@
     </div>
 
 	<h1>node-card-game under development!</h1>
-    <a href="javascript:sendMessage();">boys are back in town!</a>
+    <a href="javascript:startGame();">boys are back in town!</a>
 
   </body>
   <script src="/socket.io/socket.io.js"></script>
   <script>
     var socket = io();
 
-    function sendMessage(){
-      socket.emit("fooMessage", "valor");
-      return false;
+    function startGame(){
+      var game = {
+        "teams": [{
+          "id": 0,
+          "players": [{
+            "id": 0
+          },{
+            "id": 1
+          }]
+        },{
+          "id": 1,
+           "players": [{
+            "id": 2
+          },{
+            "id": 3
+          }]
+        }]
+      };
+
+      socket.emit("START_GAME", game);
     }
+
+    socket.on('START_GAME_RESPONSE', function(msg){
+      alert(msg);
+    });
     
 
   </script>
