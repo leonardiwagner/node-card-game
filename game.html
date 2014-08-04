@@ -1,13 +1,46 @@
-<html>
+<html ng-app="gameApp">
   <head>
   <title>Truco Of Thrones - Room #1</title>
+  <style>
+
+  .cards{
+    float:left;
+  }
+
+  .cards .card{
+    border:1px solid black;
+    width:100px;
+    height:200px;
+    float:left;
+  }
+
+  </style>
   <head>
   <body>
 
-    <div class="player">
-      <div class="card" data-family="3" data-value="5"></div>
-      <div class="card" data-family="3" data-value="5"></div>
-      <div class="card" data-family="3" data-value="5"></div>
+
+    <div id="mePlayer" class="player" ng-controller="MePlayerController">
+      <div class="cards" >
+        <div class="card" ng-repeat="card in cards" onclick="javascript:play(this);" data-family="{{card.family}}" data-value="{{card.value}}">
+          card family: {{card.family}} value: {{card.value}}
+        </div>
+      </div>
+    </div>
+    <br><br>
+    <div class="player" ng-controller="OtherPlayerController" style="display:none;">
+
+    </div>
+    <br><br>
+    <div class="score" ng-controller="ScoreController">
+      Team North: {{scoreTeam0}} <br>
+      Team South: {{scoreTeam1}} 
+    </div>
+
+    <div id="message-wait" style="background-color:red;">
+      Wait for other player move
+    </div>
+    <div id="message-play" style="background-color:green;">
+      Your turn, play!
     </div>
 
     <div id="table">
@@ -17,13 +50,34 @@
       <div class="card" data-card="4"></div>
     </div>
 
-	<h1>node-card-game under development!</h1>
-    <a href="javascript:startGame();">boys are back in town!</a>
-
-  </body>
+  <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
+  <!--<script src="js/game.js"></script>-->
   <script>
     var socket = io();
+
+    function play(card){
+      alert($(card).attr("data-family"));
+    }
+    function mePlay(){
+      $("#message-wait").hide();
+      $("#message-play").show();
+    }
+
+    function waitForOtherPlayerToPlay(){
+      $("#message-play").hide();
+      $("#message-wait").show();
+    }
+
+    var mePlayer = 0;
+    function playerPlay(response){
+      if(response.playerToPlay === mePlayer){
+        mePlay();
+      }else{
+        waitForOtherPlayerToPlay();
+      }
+    }
 
     function startGame(){
       var game = {
@@ -50,7 +104,44 @@
     socket.on('START_GAME_RESPONSE', function(msg){
       alert(msg);
     });
-    
 
+    socket.on('PLAY_RESPONSE', function(response){
+      alert(response.whatToDo);
+      switch(response.whatToDo){
+        case "PLAYER_PLAY":
+          playerPlay(response);
+          break;
+      }
+    });
+
+
+
+    var gameApp = angular.module('gameApp', []);
+
+    gameApp.controller('MePlayerController', function ($scope) {
+      
+      $scope.cards = [
+        {"family": 2, "value": 6, "status": 0},
+        {"family": 0, "value": 8, "status": 0},
+        {"family": 3, "value": 2, "status": 0}
+      ];
+
+    });
+
+    gameApp.controller('OtherPlayerController', function ($scope) {
+      
+      $scope.cards = [
+        {"family": 1, "value": 4, "status": 0},
+        {"family": 2, "value": 1, "status": 0},
+        {"family": 2, "value": 8, "status": 0}
+      ];
+
+    });
+
+    gameApp.controller('ScoreController', function ($scope) {
+      
+      $scope.scoreTeam0 = 2;
+      $scope.scoreTeam1 = 4;
+    });
   </script>
 </html>

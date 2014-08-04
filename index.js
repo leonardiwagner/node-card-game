@@ -23,6 +23,12 @@ io.on('connection', function(socket){
     console.log('user disconnected');
   });
 
+  var  playResponse = {
+    "whatToDo": "PLAYER_PLAY",
+    "playerToPlay": 0
+  };
+  io.emit('PLAY_RESPONSE', playResponse);
+
 });
 
 http.listen(3000, function(){
