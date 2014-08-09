@@ -10,6 +10,13 @@ gameApp.controller('GameController', function ($scope) {
 
   ];
 
+  $scope.tableCards = [
+  	{"player": 1, "family": 0, "value": 1},
+	{"player": 2, "family": 1, "value": 5},
+	{"player": 3, "family": 2, "value": 6},
+	{"player": 4, "family": 3, "value": 8}
+  ];
+
   $scope.players = [
   	{
   		"id": 1,

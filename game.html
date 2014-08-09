@@ -10,9 +10,15 @@
       <div class="picture"></div>
       <div class="hand" >
         <div class="card" ng-repeat="card in cards">
-          card family: {{card.family}} value: {{card.value}}
+          {{card.family}} / {{card.value}}
         </div>    
       </div>
+    </div>
+  </div>
+
+  <div id="table">
+    <div class="card" ng-repeat="card in tableCards" data-player="{{card.player}}">
+      {{card.family}} / {{card.value}}
     </div>
   </div>
 
