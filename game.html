@@ -1,35 +1,22 @@
 <html ng-app="gameApp">
   <head>
   <title>Truco Of Thrones - Room #1</title>
-  <style>
-
-  .cards{
-    float:left;
-  }
-
-  .cards .card{
-    border:1px solid black;
-    width:100px;
-    height:200px;
-    float:left;
-  }
-
-  </style>
+  <link rel="stylesheet" type="text/css" href="/public/css/main.css">
   <head>
-  <body>
+  <body ng-controller="GameController">
 
-
-    <div id="mePlayer" class="player" ng-controller="MePlayerController">
-      <div class="cards" >
-        <div class="card" ng-repeat="card in cards" onclick="javascript:play(this);" data-family="{{card.family}}" data-value="{{card.value}}">
+  <div id="players">
+    <div id="player{{player.id}}" class="player"  ng-repeat="player in players">
+      <div class="photo"></div>
+      <div class="hand" >
+        <div class="card" ng-repeat="card in cards">
           card family: {{card.family}} value: {{card.value}}
-        </div>
+        </div>    
       </div>
     </div>
-    <br><br>
-    <div class="player" ng-controller="OtherPlayerController" style="display:none;">
+  </div>
 
-    </div>
+<!--
     <br><br>
     <div class="score" ng-controller="ScoreController">
       Team North: {{scoreTeam0}} <br>
@@ -49,14 +36,14 @@
       <div class="card" data-card="2"></div>
       <div class="card" data-card="4"></div>
     </div>
-
+-->
   <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
   <script src="/socket.io/socket.io.js"></script>
-  <!--<script src="js/game.js"></script>-->
+  <script src="/public/js/game.js"></script>
   <script>
     var socket = io();
-
+    return false;
     function play(card){
       alert($(card).attr("data-family"));
     }
