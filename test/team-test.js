@@ -1,4 +1,5 @@
 var assert = require('chai').assert;
+/*
 var teamClass = require('../team.js');
 var playerClass = require('../player.js');
 
@@ -18,3 +19,4 @@ it('add points to a team', function(done){
   assert.equal(5, team.getPoints());
   done();
 });
+*/
