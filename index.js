@@ -2,13 +2,32 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+var mongoose = require('mongoose');
 
 app.use(express.static('public'));
 app.use(express.static('files'));
 app.use('/public', express.static('public'));
 
+mongoose.connect('mongodb://localhost/node-card-game');
+
+var db = mongoose.connection;
+
+db.once('open', function(){
+  console.log("hurray, connected to mongodb!");
+});
+
+var userSchema = mongoose.Schema({
+  email: String,
+  password: String
+});
+
+var User = mongoose.model('User',userSchema);
+var user = new User({ email: 'teste@teste.com', password: '123'});
+
+console.log(user.email);
+
 app.get('/', function(req, res){
-  res.sendfile('game.html');
+  res.sendfile('register.html');
 });
 
 io.on('connection', function(socket){
@@ -37,7 +56,5 @@ io.on('connection', function(socket){
 });
 
 http.listen(process.env.PORT || 5000, function(){
-
-
-  console.log('listening on *:3000');
+  console.log('listening on *:whatev');
 });
