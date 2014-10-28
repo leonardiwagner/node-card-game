@@ -3,12 +3,22 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
+var routes = require('./app/routes/index.js')(app);
 
 app.use(express.static('public'));
 app.use(express.static('files'));
 app.use('/public', express.static('public'));
 
 mongoose.connect('mongodb://localhost/node-card-game');
+
+app.set('views', './app/views');
+app.use(express.static('./app/public'));
+
+
+
+//express's error handler middleware
+app.use(express.errorHandler());
+app.use(app.router);
 
 var db = mongoose.connection;
 
