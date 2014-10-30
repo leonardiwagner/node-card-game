@@ -1,7 +1,16 @@
 language: node_js
 node_js:
   - "0.10"
+branches:
+  only:
+    - master
+    - release
+services:
+  - mongodb
+script: phantomjs testrunner.js
 deploy:
   provider: heroku
   app: nodecardgame
   api_key: f385020e-9069-444a-a4d6-7c8c5ba1c040
+  on:
+    branch: release
