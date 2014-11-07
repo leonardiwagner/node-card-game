@@ -1,0 +1,33 @@
+<html>
+	<head>
+		<script src="/socket.io/socket.io.js"></script>
+		<script>
+			socket.on('ROOM_UPDATE', function(msg){
+		      
+		    });
+		</script>
+	</head>
+	<body>
+		
+		2x2 Rooms
+
+		<section>
+			<div>
+				<div data-player="1" data-room="1"></div>
+				<div data-player="0" data-room="1"></div>
+			</div>
+		</section>
+
+		4x4 Game
+
+		<section>
+			<div>
+				<div data-player="2" data-room="2"></div>
+				<div data-player="0" data-room="2"></div>
+				<div data-player="0" data-room="2"></div>
+				<div data-player="0" data-room="2"></div>
+			</div>
+		</section>
+
+	</body>
+</html>

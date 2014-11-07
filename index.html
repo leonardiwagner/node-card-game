@@ -1,25 +1,61 @@
-<html>
+<html ng-app="gameApp">
+	<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+		<style>
+		.room .user{
+			width: 40%;
+			height: 100px;
+			background-color:red;
+			float:left;
+			margin-left:5%;
+			margin-right:5%;
+		}
+
+		.room .btn{
+			width: 90%;
+			margin: 5%;
+			float: left;
+		}
+		</style>
+	<head>
 	<body>
 		
-		2x2 Rooms
-
-		<section>
-			<div>
-				<div data-player="1" data-room="1"></div>
-				<div data-player="0" data-room="1"></div>
+		<div class="row room" ng-controller="RoomController">
+			<div class="col-xs-4 room" ng-repeat="room in rooms" data-id="{{room.id}}">
+				<div class="user" data-seat="0"></div>
+				<div class="user" data-sear="1"></div>
+				<button type="button" class="btn btn-primary btn-block" onclick="joinRoom(this);">Join</button>
 			</div>
-		</section>
-
-		4x4 Game
-
-		<section>
-			<div>
-				<div data-player="2" data-room="2"></div>
-				<div data-player="0" data-room="2"></div>
-				<div data-player="0" data-room="2"></div>
-				<div data-player="0" data-room="2"></div>
-			</div>
-		</section>
+		</div>
 
 	</body>
+	<script>
+		function joinRoom(button){
+			var roomDiv = $(button).parent();
+			var roomId = $(roomDiv).attr("data-id");
+
+			//todo check if the room is really open to join
+			window.open(
+				'/Room/' + roomId,
+				'_blank'
+			);
+
+		}
+
+	 	var gameApp = angular.module('gameApp', []);
+
+	    gameApp.controller('RoomController', function ($scope) {
+	      
+	      $scope.rooms = [
+	        {"id": 0},
+	        {"id": 1},
+	        {"id": 2}
+	      ];
+
+	    });
+
+
+	</script>
 </html>

@@ -43,9 +43,18 @@ var user = new User({ email: 'teste@teste.com', password: '123'});
 
 console.log(user.email);
 
+
 app.get('/', function(req, res){
   res.sendfile('index.html');
 });
+
+app.get('/room', function(req, res){
+  var roomId = req.query.id;
+  io.to('ROOM_' + roomId).emit("welcome to a specific room");
+});
+
+
+
 
 io.on('connection', function(socket){
   console.log('a user connected');
@@ -73,5 +82,5 @@ io.on('connection', function(socket){
 });
 
 http.listen(process.env.PORT || 5000, function(){
-  console.log('listening on *:whatev');
+  console.log('listening on *:whatevs');
 });
