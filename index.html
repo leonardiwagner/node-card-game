@@ -2,6 +2,8 @@
 	<head>
 	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/javascripts/home.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
 		<style>
 		.room .user{
@@ -22,6 +24,8 @@
 	<head>
 	<body>
 		
+		<div id="userCount"></div>
+
 		<div class="row room" ng-controller="RoomController">
 			<div class="col-xs-4 room" ng-repeat="room in rooms" data-id="{{room.id}}">
 				<div class="user" data-seat="0"></div>
@@ -32,9 +36,21 @@
 
 	</body>
 	<script>
+		var socket = io.connect();
+
+
+		bindUserCount($("#userCount"), socket);
+
+		
+
 		function joinRoom(button){
 			var roomDiv = $(button).parent();
 			var roomId = $(roomDiv).attr("data-id");
+
+			socket.emit('JOIN_ROOM', {
+				roomId: roomId,
+				player: "testPlayer"
+			});
 
 			//todo check if the room is really open to join
 			window.open(

@@ -3,16 +3,20 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
+var router = require('./app/routes/router')(app);
 //var routes = require('./app/routes/index.js')(app);
 
-app.use(express.static('public'));
-app.use(express.static('files'));
-app.use('/public', express.static('public'));
+//app.use(express.static('public'));
+//app.use(express.static('files'));
+//app.use('/public', express.static('public'));
+
+app.use(express.static(__dirname + "/public"));
 
 
 
-app.set('views', './app/views');
-app.use(express.static('./app/public'));
+
+//app.set('views', './app/views');
+//app.use(express.static('./app/public'));
 
 
 
@@ -44,21 +48,17 @@ var user = new User({ email: 'teste@teste.com', password: '123'});
 console.log(user.email);
 
 
-app.get('/', function(req, res){
-  res.sendfile('index.html');
-});
-
-app.get('/room', function(req, res){
-  var roomId = req.query.id;
-  io.to('ROOM_' + roomId).emit("welcome to a specific room");
-});
 
 
 
+var connectedUsersCount = 0;
 
-io.on('connection', function(socket){
+io.sockets.on('connection', function(socket){
   console.log('a user connected');
+  connectedUsersCount++;
+  io.emit('UPDATE_USER_COUNT', connectedUsersCount);
 
+/*
   socket.on('START_GAME', function(msg){
     console.log('message: ' + msg);
     io.emit('START_GAME_RESPONSE', "testee!");
@@ -78,8 +78,16 @@ io.on('connection', function(socket){
     "playerToPlay": 0
   };
   io.emit('PLAY_RESPONSE', playResponse);
+  */
+  socket.on('disconnect', function(){
+    console.log('a user disconnected');
+    connectedUsersCount--;
+    io.emit('UPDATE_USER_COUNT', connectedUsersCount);
+  });
 
 });
+
+
 
 http.listen(process.env.PORT || 5000, function(){
   console.log('listening on *:whatevs');
