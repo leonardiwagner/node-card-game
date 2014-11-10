@@ -40,6 +40,7 @@
 
 
 		bindUserCount($("#userCount"), socket);
+		readRooms(socket);
 
 		
 
@@ -47,17 +48,24 @@
 			var roomDiv = $(button).parent();
 			var roomId = $(roomDiv).attr("data-id");
 
+			socket.emit('join:room', {
+				roomId: 1,
+				user: 'Kastrynhhus'
+			});
+
+/*
 			socket.emit('JOIN_ROOM', {
 				roomId: roomId,
 				player: "testPlayer"
 			});
+
 
 			//todo check if the room is really open to join
 			window.open(
 				'/Room/' + roomId,
 				'_blank'
 			);
-
+*/
 		}
 
 	 	var gameApp = angular.module('gameApp', []);

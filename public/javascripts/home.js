@@ -1,5 +1,4 @@
 function bindUserCount(htmlElement, socket){
-
   socket.on('UPDATE_USER_COUNT', function(userCount){
     var message = "Oh there is no one here :(";
     if(userCount == 1){
@@ -11,3 +10,10 @@ function bindUserCount(htmlElement, socket){
     $(htmlElement).html(message);
   });
 }
+
+function readRooms(socket){
+  socket.emit('ROOMS', function(rooms){
+    console.log(rooms);
+  });
+}
+

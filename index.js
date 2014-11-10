@@ -4,16 +4,40 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var mongoose = require('mongoose');
 var router = require('./app/routes/router')(app);
-//var routes = require('./app/routes/index.js')(app);
-
-//app.use(express.static('public'));
-//app.use(express.static('files'));
-//app.use('/public', express.static('public'));
 
 app.use(express.static(__dirname + "/public"));
 
 
 
+/*
+var rooms = {
+  {
+    id: 1,
+    players: [null, null]
+  },
+  {
+    id: 2,
+    players: [null, null]
+  },
+};*/
+
+//create rooms sockets
+
+function createRoomSocket(io, roomId){
+  var room = io.sockets.in("ROOM_" + roomId);
+
+  room.on('join', function(user){
+    console.log("User: " + user + " joined room: " + roomId);
+  });
+
+  room.on('leave', function(user){
+    console.log("User: " + user + " joined room: " + roomId);
+  });
+}
+
+createRoomSocket(io, 1);
+createRoomSocket(io, 2);
+createRoomSocket(io, 3);
 
 //app.set('views', './app/views');
 //app.use(express.static('./app/public'));
@@ -58,12 +82,38 @@ io.sockets.on('connection', function(socket){
   connectedUsersCount++;
   io.emit('UPDATE_USER_COUNT', connectedUsersCount);
 
-/*
-  socket.on('START_GAME', function(msg){
-    console.log('message: ' + msg);
-    io.emit('START_GAME_RESPONSE', "testee!");
+
+  socket.on('ROOMS', function(msg){
+    io.emit('ROOMS_RESPONSE', '');
   });
 
+  socket.on('JOIN_ROOM', function(obj){
+    var roomId = obj.roomId;
+    var user = obj.user;
+
+    socket.nickname = user;
+    socket.join('ROOM_1');
+
+    console.log('user joined room');
+  });
+
+  socket.on('READ_ROOM', function(roomId){
+    var users = io.sockets.adapter.rooms['ROOM_1']; 
+
+    for (var clientId in users ) {
+
+     //this is the socket of each client in the room.
+     var clientSocket = io.sockets.connected[clientId];
+
+      console.log('>' + clientId);
+    }
+
+    io.emit('ROOM_RESPONSE', users);
+
+   
+  });
+
+  /*
   socket.on('PLAY', function(msg){
     console.log('message: ' + msg);
      io.emit('chat message', msg);
