@@ -8,27 +8,46 @@
 
 		<div id="players">
 
+      <div class="chair" data-player-chair="0">-- empty --</div>
+      <div class="chair" data-player-chair="1">-- empty --</div>
+      <div class="chair" data-player-chair="2">-- empty --</div>
+      <div class="chair" data-player-chair="3">-- empty --</div>
+
 		</div>
 
 	</body>
 	<script>
 		var socket = io.connect();
+    var me = window.prompt("What's your nickname?");
 
-		socket.on('connect', function (data) {
-      socket.emit('JOIN_ROOM', {
+		socket.on('connect', function () {
+      socket.emit('room:join', {
 				roomId: 1,
-				user: 'Kastrynhhus'
+				userId: me
 			});
     });
 
-    socket.emit('READ_ROOM', 1);
+		socket.on('room:userJoined', function(response){
+      console.log(response);
+			var user = response.user;
+      var chair = response.chair;
 
-		
-
-		socket.on('ROOM_RESPONSE', function(response){
-			console.log(response);
-      $("#players").html(response);
+      $(".chair[data-player-chair='" + chair + "']").html(user);
     });
+
+    socket.on('room:userDisconnected', function(response){
+      console.log(response);
+      var chair = response.chair;
+
+      $(".chair[data-player-chair='" + chair + "']").html("-- empty --");
+    });
+
+    socket.on('room:fullRoom', function(){
+      alert("OMG room is full already :(");
+    });
+
+    
+
 
 	</script>
 </html>
