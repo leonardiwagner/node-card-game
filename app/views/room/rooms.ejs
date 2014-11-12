@@ -1,0 +1,11 @@
+<div class="rooms" ng-controller="RoomsCtrl">
+  <div class="room" ng-repeat="room in rooms">
+    <div class="player" ng-repeat="player in room.players">
+      {{player}}
+    </div>
+    <button type="button" class="btn btn-primary" onclick="joinRoom(this);">Join</button>
+  </div>
+</div>
+
+<link rel="stylesheet" href="/css/rooms.css">
+<script src="/javascripts/rooms.js"></script>

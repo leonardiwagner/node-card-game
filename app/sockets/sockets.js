@@ -14,7 +14,7 @@ module.exports = function SocketManager(http){
       connectedSockets--;
       io.emit('socket:countUpdate', connectedSockets);
 
-      roomSocket.disconnectUserFromRooms(socket);
+      //roomSocket.disconnectUserFromRooms(socket);
     });
 
   });

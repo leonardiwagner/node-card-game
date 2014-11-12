@@ -1,5 +1,5 @@
 
-module.exports = AccountRouter = function(app){
+module.exports = RoomRouter = function(app){
   app.get('/room', function(req, res){
     var roomId = req.query.id;
     
