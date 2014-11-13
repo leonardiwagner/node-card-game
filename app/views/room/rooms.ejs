@@ -3,7 +3,11 @@
     <div class="player" ng-repeat="player in room.players">
       {{player}}
     </div>
-    <button type="button" class="btn btn-primary" onclick="joinRoom(this);">Join</button>
+    <div ng-switch="room.status">
+      <button ng-switch-when="open" type="button" class="btn btn-primary" ng-click="joinRoom(room.roomId);">Join</button>
+      <button ng-switch-when="locked" type="button" class="btn btn-default" ng-click="joinRoom(room.roomId);" disabled="disabled">Full room</button>
+      <button ng-switch-when="joined" type="button" class="btn btn-danger" ng-click="leaveRoom(room.roomId);">Leave</button>
+    </div>
   </div>
 </div>
 

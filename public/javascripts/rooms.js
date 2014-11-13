@@ -1,30 +1,58 @@
+var userName = "Anonymous" + Math.floor(Math.random() * 9999 + 1000); //window.prompt('What\'s your nickname?');
+$("#anonymousNickname").html(userName);
+
+//this need to be made at login
+socket.emit('user:bindUserToSocket', userName);
+
+
+
 var gameApp = angular.module('gameApp', []);
 
 gameApp.controller('RoomsCtrl', function ($scope) {
-        
-  $scope.rooms = [
-      {
-        roomId: 0,
-        players: ["carl", "johnson"],
-        isOpen: true
-      },
-      {
-        roomId: 1,
-        players: ["carl", "johnson"],
-        isOpen: false
+  
+  socket.emit('rooms:list', userName);
+  socket.on('rooms:listResponse', function(roomList){
+    console.log("fuck yeah!! response");
+    $scope.rooms = roomList;
+  });
 
-      },
-      {
-        roomId: 2,
-        players: ["carl", "johnson", "ople", "jack"],
-        isOpen: true
-      },
-      {
-        roomId: 3,
-        players: ["carl", "johnson", "ople", "jack"],
-        isOpen: true
-      }
-  ];
+  $scope.rooms = 
 
+  $scope.joinRoom = function(button){
+    var roomId = $(button).parent().attr('data-room-id');
+
+    for(var i =0; i < $scope.rooms.length; i++){
+       $scope.rooms[i].status = "busy";
+    }
+
+    socket.emit('rooms:join', {
+      roomId: roomId,
+      user: userName
+    });
+
+  };
+
+  $scope.leaveRoom = function(button){
+    var roomId = $(button).parent().attr('data-room-id');
+
+    for(var i =0; i < $scope.rooms.length; i++){
+       $scope.rooms[i].status = "busy";
+    }
+
+    socket.emit('rooms:leave', {
+      roomId: roomId,
+      userId: userName
+    });
+
+  };
+
+  socket.on('rooms:updateRoom', function(roomInfo){
+    $scope.rooms[roomInfo.roomId].players = roomInfo.players;
+    $scope.rooms[roomInfo.roomId].isOpen = roomInfo.isOpen;
+  });
+
+  socket.on('rooms:startGame', function(roomInfo){
+    window.href = "/room?id=" + roomInfo.roomId;
+  });
 
 });
