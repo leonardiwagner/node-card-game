@@ -12,11 +12,11 @@ gameApp.controller('RoomsCtrl', function ($scope) {
   
   socket.emit('rooms:list', userName);
   socket.on('rooms:listResponse', function(roomList){
-    console.log("fuck yeah!! response");
+    console.log(roomList);
     $scope.rooms = roomList;
+    $scope.$apply();
   });
 
-  $scope.rooms = 
 
   $scope.joinRoom = function(button){
     var roomId = $(button).parent().attr('data-room-id');
