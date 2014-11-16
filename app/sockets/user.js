@@ -1,28 +1,29 @@
-module.exports = function UserSocketwin(io, socket){
-  var userSocketTable = [];
-  var socketUserTable = [];
+module.exports = UserSocket = function(io, socket){
 
-  /*
-  function bindSocketToUser(socket, userId){
-    userSocketTable[socket.id] = userId;
-  }
+    var userSocketTable = [];
+    var socketUserTable = [];
 
-  function unbindSocketFromUser(socket){
-    delete userSocketTable[socket.id];
-  }
-  */
+    /*
+    function bindSocketToUser(socket, userId){
+      userSocketTable[socket.id] = userId;
+    }
 
-  function getUserFromSocket(socket){
-    return userSocketTable[socketId];
-  }
+    function unbindSocketFromUser(socket){
+      delete userSocketTable[socket.id];
+    }
+    */
 
-  function getSocketFromUser(userId){
-    return socketUserTable[userId];
-  }
+    this.getUserFromSocket = function(socket){
+      return userSocketTable[socket];
+    }
 
-  socket.on('user:bindUserToSocket', function(userName){
-    userSocketTable[socket.id] = userName;
-    socketUserTable[userName] = socket.id;
-  });
+    this.getSocketFromUser = function(userId){
+      return socketUserTable[userId];
+    }
+
+    socket.on('user:bindUserToSocket', function(userName){
+      userSocketTable[socket.id] = userName;
+      socketUserTable[userName] = socket.id;
+    });
 
 }

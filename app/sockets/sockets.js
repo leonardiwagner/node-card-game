@@ -1,10 +1,13 @@
+require('./user');
+
 module.exports = function(http){
   var io = require('socket.io')(http);
   var connectedSockets = 0;
   
   io.sockets.on('connection', function(socket){
-    var userSocket = require('./user')(io, socket);
-    console.log(userSocket);
+    
+
+    var userSocket = new UserSocket(io, socket);
     var roomsSocket = require('./rooms')(io, socket, userSocket);
 
     connectedSockets++;
@@ -17,4 +20,4 @@ module.exports = function(http){
 
   });
 
-};
+}

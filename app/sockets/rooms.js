@@ -59,7 +59,9 @@ module.exports = function RoomsSockets(io, socket, userSocket){
 
   socket.on('rooms:list', function(userId){
     console.log("room list request");
-    io.sockets.socket(userSocket.getSocketFromUser(userId)).emit('rooms:listResponse', rooms);
+    //io.to(userSocket.getSocketFromUser(userId)).emit('rooms:listResponse', rooms);
+    socket.emit('rooms:listResponse', rooms);
+    //io.to(userSocket.getSocketFromUser(userId)).emit('rooms:listResponse', rooms);
   });
 
 }
