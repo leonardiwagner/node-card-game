@@ -5,9 +5,9 @@ branches:
   only:
     - master
     - release
-services:
-  - mongodb
-script: phantomjs testrunner.js
+#services:
+  #- mongodb
+#script: phantomjs testrunner.js
 deploy:
   provider: heroku
   app: nodecardgame
