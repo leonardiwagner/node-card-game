@@ -11,14 +11,11 @@ var gameApp = angular.module('gameApp', [])
 
 gameApp.controller('GameController', function ($scope) {
   
-  $scope.players = [
-    {
-      name: "<<0>"
-    },
-    {
-      name: "<<1>>"
-    }
-  ];
+  var name = window.prompt("Whats your name?");
+  socket.emit('game:join', {
+    roomId: 1,
+    user: name
+  });
 
   $scope.score = [
     {
@@ -31,5 +28,34 @@ gameApp.controller('GameController', function ($scope) {
     }
   ];
 
+  $scope.moveCard = function(event){
+    var cardId = $(event.target).attr('data-card-id');
+    socket.emit('game:move', {
+      user: name,
+      cardId: cardId
+    });
+  }
+
   $('* [data-chair="0"]').css('top', '75%');
+
+  
+
+  socket.on('game:play', function(){
+    changeStatus("move");
+  });
+
+  socket.on('game:wait', function(){
+    changeStatus("waiting");
+  });
+
+  socket.on('game:setPlayers', function(players){
+    $scope.players = [players.player0, players.player1];
+    $scope.$apply();
+  });
+
+  function changeStatus(status){
+    $(".status").hide();
+    $("#status ." + status).show();
+  }
+
 });

@@ -6,10 +6,8 @@
     <div class="accountPicture">
       <div class="accountName">{{player.name}}</div>
     </div>
-    <div class="cards">
-      <div class="card"></div>
-      <div class="card"></div>
-      <div class="card"></div>
+    <div class="cards" ng-repeat="card in player.cards">
+      <div class="card" ng-click="moveCard($event)" data-card-id="{{$index}}">{{card.value}}/{{card.family}}</div>
     </div>
   </div>
 
@@ -35,21 +33,21 @@
   </div>
 
   <div id="status">
-    <div id="waitingOtherPlayer">Waiting for player Jessé</div>
-    <div id="yourMove">
+    <div class="status waiting">Waiting for player Jessé</div>
+    <div class="status move">
       Your move now, choose a card
-      <a>Request "Blood and Thunder!" (round for 3 points)</a>
+      <!--<a>Request "Blood and Thunder!" (round for 3 points)</a>-->
     </div>
-    <div id="replyChallenge">
+    <div id="replyChallenge" class="status">
       <a>Run from battle! (loses 1 point)</a>
       <a>Accept challenge (round for 3 points)</a>
       <a>Request "White Whale!" (round for 6 points)</a>
     </div>
-    <div id="replyChallenge2">
+    <div id="replyChallenge2" class="status">
       <a>Run from battle! (loses 3 points)</a>
       <a>Accept challenge (round for 6 points)</a>
     </div>
-    <div id="timer">0:15</div>
+    <div id="timer" class="status">0:15</div>
   </div>
 
   <div id="message" style="display: none;">
