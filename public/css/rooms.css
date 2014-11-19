@@ -1,3 +1,4 @@
+/*
 .rooms{
   width: 100%;
   float: left;
@@ -10,13 +11,29 @@
   float: left;
   background-color:yellow;
 }
-
+*/
+/*
 .room .btn{
   width:95%;
   margin-left: 5%;
   display: block;
 }
+*/
 
+.room{
+  padding: 2%;
+  width: 98%;
+}
+
+.player{
+  width: 40%;
+  margin: 5%;
+  height: 100px;
+  float: left;
+  background-color:red;
+}
+
+/*
 .player{
   width: 45%;
   margin-left: 5%;
@@ -27,3 +44,4 @@
 }
 
 
+*/
