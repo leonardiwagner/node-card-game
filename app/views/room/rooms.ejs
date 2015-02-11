@@ -14,4 +14,9 @@
 </div>
 
 <link rel="stylesheet" href="/css/rooms.css">
-<script src="/javascripts/rooms.js"></script>
+<script>
+
+  require(["home"], function(home){
+    home.loadRooms();
+  });
+</script>

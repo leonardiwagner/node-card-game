@@ -1,3 +1,10 @@
+define(["jquery"], function($){
+  return{
+    loadRooms: function(){ alert(1); }
+  }
+});
+
+/*
 function bindUserCount(htmlElement, socket){
   socket.on('UPDATE_USER_COUNT', function(userCount){
     var message = "Oh there is no one here :(";
@@ -16,4 +23,4 @@ function readRooms(socket){
     console.log(rooms);
   });
 }
-
+*/
