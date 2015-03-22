@@ -10,7 +10,7 @@ module.exports = function(http){
   io.sockets.on('connection', function(socket){
     var userSocket = new UserSocket(io, socket);
     var roomsSocket = new RoomsSocket(io, socket, userSocket);
-    //var gameSocket = new GameSocket('./game')(io, socket);
+    var gameSocket = new GameSocket(io, socket);
 
     //connectedSockets++;
     //io.emit('socket:countUpdate', connectedSockets);

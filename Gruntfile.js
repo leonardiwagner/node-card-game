@@ -16,7 +16,8 @@ module.exports = function(grunt){
     },
 
     less: {
-        'public/css/rooms.css': 'public/stylesheets/rooms.less'
+        'public/css/rooms.css': 'public/stylesheets/rooms.less',
+        'public/css/game.css': 'public/stylesheets/game.less'
     },
 
     watch: {

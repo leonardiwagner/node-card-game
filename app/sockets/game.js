@@ -1,68 +1,35 @@
-var players = {
-  player0: {
-    user: null,
-    socketId: null,
-    cards:[
-      {'value': 3, family: 2},
-      {'value': 0, family: 1},
-      {'value': 4, family: 0}
-    ]
-  },
-  player1: {
-    user: null,
-    socketId: null,
-    cards:[
-      {'value': 3, family: 2},
-      {'value': 0, family: 1},
-      {'value': 4, family: 0}
-    ]
-  }
+require('./../domain/game');
+var gameDomain = new Game();
+
+var game = {
+  player0: {userId: null, socketId: null},
+  player1: {userId: null, socketId: null}
 };
   
-module.exports = function GameSockets(io, socket){
-  var roomId = "ROOM_1";
-  
-  
-
-  
-
-  socket.on('game:move', function(moveRequest){
-    table.push({
-      card: {value: 3, family: 2},
-      user: 1
-    });
-
-    if(table.length < NUMBER_OF_PLAYERS){
-      //wait for next move
-      io.to(roomId).emit('game:nextMove', moveRequest);
-    }else{
-      //check whos the winner
-      var winnerUser;
-      if(table[0].card.value > table[1].card.value){
-        winnerUser = table[0].user;
-      }else{
-        winnerUser = table[1].user;
-      }
-
-      io.to(roomId).emit('game:endRound', winnerUser);
-    }
-   });
-
+module.exports = GameSocket = function(io, socket){
+  var socketRoom = "room_1";
 
   socket.on('game:join', function(joinRequest){
-    if(players.player0.user == null){
-      players.player0.user = joinRequest.user;
-      players.player0.socketId = socket.id;
-      socket.join(roomId);
-    }else{
-      players.player1.user = joinRequest.user;
-      players.player1.socketId = socket.id;
-      socket.join(roomId);
+    if(game.player0.userId == null){
+      game.player0.userId = joinRequest.userId;
+      game.player0.socketId = socket.id;
+      socket.join(socketRoom);
 
-      io.to(roomId).emit('game:setPlayers', players);
+      io.to(socketRoom).emit("game:setPlayers", game);
+
+      io.to(socketRoom).emit('game:status', "Waiting for another player");
+
+    }else{
+      game.player1.userId = joinRequest.userId;
+      game.player1.socketId = socket.id;
+      socket.join(socketRoom);
+
+      io.to(socketRoom).emit("game:setPlayers", game);
+
+      io.to(socketRoom).emit("game:distributeCards", gameDomain.distributeCards());
       
-      io.to(players.player0.socketId).emit('game:play');
-      io.to(players.player1.socketId).emit('game:wait');
+      io.to(game.player0.socketId).emit('game:play');
+      io.to(game.player1.socketId).emit('game:wait');
     }
   });
 

@@ -1,48 +1,40 @@
-module.exports.Game = Game = function(roomId, players){
-  var NUMBER_OF_PLAYERS = 2;
-  var currentPlayer = 0;
+module.exports.Game = Game = function(){
 
-  var players = {
-    player0: {
-      user: null,
-      socketId: null,
-      cards:[
-        {'value': 3, family: 2},
-        {'value': 0, family: 1},
-        {'value': 4, family: 0}
-      ]
-    },
-    player1: {
-      user: null,
-      socketId: null,
-      cards:[
-        {'value': 3, family: 2},
-        {'value': 0, family: 1},
-        {'value': 4, family: 0}
-      ]
-    }
+  var that = this;
+
+  this.distributeCards = function(){
+    var deck = that.getDeck();
+    deck = that.shuffleDeck(deck);
+
+    return {
+      player0: [deck[0], deck[1], deck[2]],
+      player1: [deck[3], deck[4], deck[5]],
+      tableCard: deck[6]
+    };
   };
 
-  var table = [];
-
-  function move(){
-    table.push({
-      card: {value: 3, family: 2},
-      user: 1
-    });
-
-    if(table.length < NUMBER_OF_PLAYERS){
-      //wait for next move
-    }else{
-      //check whos the winner
-      var winnerUser;
-      if(table[0].card.value > table[1].card.value){
-        winnerUser = table[0].user;
-      }else{
-        winnerUser = table[0].user;
+  this.getDeck = function(){
+    var deck = [];
+    for(var iValue = 0; iValue < 10; iValue++){
+      for(var iFamily = 0; iFamily < 4; iFamily++){
+        deck.push({
+          "value": iValue,
+          "family": iFamily
+        });
       }
     }
-  }
+
+    return deck;
+  };
+
+  this.shuffleDeck = function(deck){
+    //http://stackoverflow.com/questions/6274339/how-can-i-shuffle-an-array-in-javascript
+    for(var j, x, i = deck.length; i; j = Math.floor(Math.random() * i), x = deck[--i], deck[i] = deck[j], deck[j] = x);
+    return deck;
+  };
+  
+
+  
 
 
 

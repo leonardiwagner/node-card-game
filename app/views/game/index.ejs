@@ -4,7 +4,7 @@
 
   <div class="player" data-chair="{{$index}}" ng-repeat="player in players" organize-player-position>
     <div class="accountPicture">
-      <div class="accountName">{{player.name}}</div>
+      <div class="accountName">{{player.userId}}</div>
     </div>
     <div class="cards" ng-repeat="card in player.cards">
       <div class="card" ng-click="moveCard($event)" data-card-id="{{$index}}">{{card.value}}/{{card.family}}</div>
@@ -67,10 +67,8 @@
   </div>
 
   <link rel="stylesheet" href="/css/game.css">
+  <script src="/javascripts/lib/jquery.js"></script>
+  <script src="/javascripts/lib/angular.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
   <script src="/javascripts/game.js"></script>
-  <script>
-    var me = "0";
-
-    
-  </script>
 </div>

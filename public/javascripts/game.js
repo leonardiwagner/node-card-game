@@ -1,55 +1,42 @@
-var gameApp = angular.module('gameApp', [])
-  .directive('organize-player-position', function(){
-    return function(oi){
-      console.log(oi);
-      if(scope.$last){
-        alert('Im the last!');
-      }
-    }
-  })
-;
+
+socket = io();
+
+var gameApp = angular.module('gameApp', []);
 
 gameApp.controller('GameController', function ($scope) {
-  
-  var name = window.prompt("Whats your name?");
-  socket.emit('game:join', {
-    roomId: 1,
-    user: name
-  });
 
-  $scope.score = [
+  $scope.players = [
     {
-      partial: 1,
-      total: 5
+     player: 0,
+     userId: null,
+     cards: []
     },
     {
-      partial: 0,
-      total: 3
+      player: 1,
+      userId: null,
+      cards: []
     }
   ];
 
-  $scope.moveCard = function(event){
-    var cardId = $(event.target).attr('data-card-id');
-    socket.emit('game:move', {
-      user: name,
-      cardId: cardId
-    });
-  }
-
-  $('* [data-chair="0"]').css('top', '75%');
-
-  
-
-  socket.on('game:play', function(){
-    changeStatus("move");
+  socket.emit('game:join', {
+    roomId: 1,
+    userId: "Anonymous" + Math.floor(Math.random() * 9999 + 1000)
   });
 
-  socket.on('game:wait', function(){
-    changeStatus("waiting");
-  });
 
   socket.on('game:setPlayers', function(players){
-    $scope.players = [players.player0, players.player1];
+    $scope.players[0].userId = players.player0.userId;
+    $scope.players[1].userId = players.player1.userId;
+    $scope.$apply();
+  });
+
+  socket.on('game:status', function(status){
+    console.log(status);
+  });
+
+  socket.on('game:distributeCards', function(cards){
+    $scope.players[0].cards = cards.player0;
+    $scope.players[1].cards = cards.player1;
     $scope.$apply();
   });
 
