@@ -1,8 +1,3 @@
-define(["jquery"], function($){
-  return{
-    loadRooms: function(){ alert(1); }
-  }
-});
 
 /*
 function bindUserCount(htmlElement, socket){

@@ -1,3 +1,5 @@
+var underscore = require("underscore");
+
 var rooms = [
   {
     roomId: 0,
@@ -22,8 +24,8 @@ var rooms = [
   }
 ];
 
-module.exports = function RoomsSockets(io, socket, userSocket){
-
+module.exports = RoomsSocket = function(io, socket, userSocket){
+  var that = this;
   function disconnectUserFromRooms(socket){
     for(var room in socket.rooms){
         io.to(room).emit('room:userDisconnected',{
@@ -33,35 +35,71 @@ module.exports = function RoomsSockets(io, socket, userSocket){
       }
   }
 
+  this.sendUpdateRooms = function(){
+    io.sockets.emit('rooms:listResponse', rooms);
+  };
+
   socket.on('rooms:join', function(joinObject){
     var roomId = joinObject.roomId;
     var userId = joinObject.userId;
+
 
     for(var i = 0; i < rooms[roomId].players.length; i++){
       if(rooms[roomId].players[i].userId === null){
         rooms[roomId].players[i].userId = userId;
 
         //do it in the specific room
-        /*socket.join('room_' + roomId);
+        socket.join('room_' + roomId);
 
+        io.to(userSocket.getSocketFromUser(userId)).emit('rooms:joined',roomId);
+
+        if(underscore.every(rooms[roomId].players, function(x) { return x.userId != null;})){
+          io.to('room_' + roomId).emit('rooms:goToRoom',1);
+        }
+
+        /*
         io.to('room_' + roomId).emit('room:userJoined',{
           user: userId,
           chair: i
         });*/ 
 
-        io.sockets.socket(userSocket.getSocketFromUser(userId)).emit('rooms:joined');
-        return;
+        console.log(userSocket.getSocketFromUser(userId));
+
+        
+        //socket.emit('user-typing-start', "End Typing");
+        break;
       }
     }
 
-    io.emit('rooms:fullRoom');
+    that.sendUpdateRooms();
   });
 
   socket.on('rooms:list', function(userId){
-    console.log("room list request");
-    //io.to(userSocket.getSocketFromUser(userId)).emit('rooms:listResponse', rooms);
-    socket.emit('rooms:listResponse', rooms);
-    //io.to(userSocket.getSocketFromUser(userId)).emit('rooms:listResponse', rooms);
+    that.sendUpdateRooms();
   });
+
+  this.removeUserFromRoom = function(userId){
+    var roomId = removeUserAndGetRoomId(userId);
+    if(roomId !== undefined){
+      that.sendUpdateRooms();
+    }
+  };
+
+  function removeUserAndGetRoomId(userId){
+    var roomId = undefined;
+    underscore.each(rooms, function(room){
+      for(var i =0; i < room.players.length; i ++){
+        if(room.players[i].userId == userId){
+          room.players[i].userId = null;
+          roomId = room.roomId;
+        }
+      }
+
+    });
+
+    return roomId;
+  }
+
+  
 
 }

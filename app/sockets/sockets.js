@@ -1,5 +1,6 @@
 require('./user');
-
+require('./rooms');
+require('./game');
 
 module.exports = function(http){
   var io = require('socket.io')(http);
@@ -7,19 +8,23 @@ module.exports = function(http){
   var connectedSockets = 0;
   
   io.sockets.on('connection', function(socket){
-    
-    io.set('log level', false);
-    
     var userSocket = new UserSocket(io, socket);
-    var roomsSocket = require('./rooms')(io, socket, userSocket);
-    var gameSocket = require('./game')(io, socket);
+    var roomsSocket = new RoomsSocket(io, socket, userSocket);
+    //var gameSocket = new GameSocket('./game')(io, socket);
 
-    connectedSockets++;
-    io.emit('socket:countUpdate', connectedSockets);
+    //connectedSockets++;
+    //io.emit('socket:countUpdate', connectedSockets);
 
     socket.on('disconnect', function(){
-      connectedSockets--;
-      io.emit('socket:countUpdate', connectedSockets);
+      //connectedSockets--;
+      //io.emit('socket:countUpdate', connectedSockets);
+      var userId = userSocket.getUserFromSocket(socket.id);
+      if(userId !== undefined){
+        roomsSocket.removeUserFromRoom(userId);  
+        userSocket.unbindUser(socket.id);
+        
+      }
+      
     });
 
   });

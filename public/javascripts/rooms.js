@@ -1,7 +1,8 @@
 var userName = "Anonymous" + Math.floor(Math.random() * 9999 + 1000); //window.prompt('What\'s your nickname?');
 $("#anonymousNickname").html(userName);
 
-//this need to be made at login
+
+socket = io();
 socket.emit('user:bindUserToSocket', userName);
 
 
@@ -12,22 +13,19 @@ gameApp.controller('RoomsCtrl', function ($scope) {
   
   socket.emit('rooms:list', userName);
   socket.on('rooms:listResponse', function(roomList){
-    console.log(roomList);
     $scope.rooms = roomList;
     $scope.$apply();
   });
 
 
-  $scope.joinRoom = function(button){
-    var roomId = $(button).parent().attr('data-room-id');
-
+  $scope.joinRoom = function(roomId){
     for(var i =0; i < $scope.rooms.length; i++){
        $scope.rooms[i].status = "busy";
     }
 
     socket.emit('rooms:join', {
       roomId: roomId,
-      user: userName
+      userId: userName
     });
 
   };
@@ -51,8 +49,12 @@ gameApp.controller('RoomsCtrl', function ($scope) {
     $scope.rooms[roomInfo.roomId].isOpen = roomInfo.isOpen;
   });
 
-  socket.on('rooms:startGame', function(roomInfo){
-    window.href = "/room?id=" + roomInfo.roomId;
+  socket.on('rooms:joined', function(roomId){
+    //window.location = "room?id=" + roomId;
+  });
+
+  socket.on('rooms:goToRoom', function(roomId){
+    window.location = "room?id=" + roomId;
   });
 
 });
