@@ -1,22 +1,21 @@
+"use strict";
+
 var userName = "Anonymous" + Math.floor(Math.random() * 9999 + 1000); //window.prompt('What\'s your nickname?');
 $("#anonymousNickname").html(userName);
 
-
-socket = io();
+var socket = io();
 socket.emit('user:bindUserToSocket', userName);
 
 
 
 var gameApp = angular.module('gameApp', []);
-
-gameApp.controller('RoomsCtrl', function ($scope) {
+gameApp.controller('RoomCtrl', function ($scope) {
   
-  socket.emit('rooms:list', userName);
-  socket.on('rooms:listResponse', function(roomList){
+  socket.emit('room:join', userName);
+  socket.on('rooms:joinResponse', function(roomList){
     $scope.rooms = roomList;
     $scope.$apply();
   });
-
 
   $scope.joinRoom = function(roomId){
     for(var i =0; i < $scope.rooms.length; i++){
@@ -27,7 +26,6 @@ gameApp.controller('RoomsCtrl', function ($scope) {
       roomId: roomId,
       userId: userName
     });
-
   };
 
   $scope.leaveRoom = function(button){

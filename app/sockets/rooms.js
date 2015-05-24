@@ -1,30 +1,11 @@
-var underscore = require("underscore");
+"use strict";
 
-var rooms = [
-  {
-    roomId: 0,
-    players: [{userId: null}, {userId: null}],
-    status: "open"
-  },
-  {
-    roomId: 1,
-    players: [{userId: null}, {userId: null}],
-    status: "open"
+var room = {
+  "player1": null,
+  "player2": null
+}
 
-  },
-  {
-    roomId: 2,
-    players: [{userId: null}, {userId: null}, {userId: null}, {userId: null}],
-    status: "open"
-  },
-  {
-    roomId: 3,
-    players: [{userId: null}, {userId: null}, {userId: null}, {userId: null}],
-    status: "open"
-  }
-];
-
-module.exports = RoomsSocket = function(io, socket, userSocket){
+var roomSocket = function(io, socket, userSocket){
   var that = this;
   function disconnectUserFromRooms(socket){
     for(var room in socket.rooms){
@@ -103,3 +84,5 @@ module.exports = RoomsSocket = function(io, socket, userSocket){
   
 
 }
+
+module.exports.RoomSocket = roomSocket;
