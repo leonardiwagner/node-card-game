@@ -12,47 +12,34 @@ var gameApp = angular.module('gameApp', []);
 gameApp.controller('RoomCtrl', function ($scope) {
   
   socket.emit('room:join', userName);
-  socket.on('rooms:joinResponse', function(roomList){
-    $scope.rooms = roomList;
-    $scope.$apply();
+  socket.on('room:FULL_ROOM', function(){
+    console.log("full room");
+  });
+  socket.on('room:START_GAME', function(playerCards){
+    $("#player-card-1").html(playerCards[0]);
+    $("#player-card-2").html(playerCards[1]);
+    $("#player-card-3").html(playerCards[2]);
+  });
+  socket.on('room:WAITING_FOR_PLAYERS', function(){
+    console.log("waiting player room");
+  });
+  socket.on('room:PLAYER_LEFT', function(){
+    console.log("player left room");
   });
 
-  $scope.joinRoom = function(roomId){
-    for(var i =0; i < $scope.rooms.length; i++){
-       $scope.rooms[i].status = "busy";
-    }
-
-    socket.emit('rooms:join', {
-      roomId: roomId,
-      userId: userName
-    });
-  };
-
-  $scope.leaveRoom = function(button){
-    var roomId = $(button).parent().attr('data-room-id');
-
-    for(var i =0; i < $scope.rooms.length; i++){
-       $scope.rooms[i].status = "busy";
-    }
-
-    socket.emit('rooms:leave', {
-      roomId: roomId,
-      userId: userName
-    });
-
-  };
-
-  socket.on('rooms:updateRoom', function(roomInfo){
-    $scope.rooms[roomInfo.roomId].players = roomInfo.players;
-    $scope.rooms[roomInfo.roomId].isOpen = roomInfo.isOpen;
+  socket.on('room:YOUR_TURN', function(){
+    $("#message").html("It's your turn, choose a card to play");
   });
 
-  socket.on('rooms:joined', function(roomId){
-    //window.location = "room?id=" + roomId;
+  socket.on('room:WAIT_PLAYER_MOVE', function(){
+    $("#message").html("Wait for opponent move  ");
   });
 
-  socket.on('rooms:goToRoom', function(roomId){
-    window.location = "room?id=" + roomId;
+  $(".card").click(function(){
+    var value = $(this).text();
+    socket.emit("room:MOVE", value);
   });
+
+
 
 });

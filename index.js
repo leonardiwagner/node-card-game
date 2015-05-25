@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 
 
 var router = require('./app/routes/index')(app);
-var socketManager = require('./app/sockets/sockets')(http);
+require('./app/sockets/index')(http);
 
 app.use(express.static(__dirname + "/public"));
 
