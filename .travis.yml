@@ -8,7 +8,9 @@ branches:
 #services:
   #- mongodb
 #script: phantomjs testrunner.js
-postinstall: "bower install"
+before_script:
+- npm install -g bower
+- bower install
 deploy:
   provider: heroku
   app: nodecardgame

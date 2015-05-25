@@ -24,6 +24,7 @@
     "stylus": "^0.47.3"
   },
   "scripts": {
-    "test": "node_modules/.bin/mocha"
+    "test": "node_modules/.bin/mocha",
+    "postinstall": "bower install"
   }
 }
