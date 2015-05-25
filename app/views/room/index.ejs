@@ -10,12 +10,12 @@
     <tr>
       <td>Team North</td>
       <td>0</td>
-      <td>5</td>
+      <td>{{score.player1.total}}</td>
     </tr>
     <tr>
       <td>Team South</td>
-      <td>1</td>
-      <td>3</td>
+      <td>0</td>
+      <td>{{score.player2.total}}</td>
     </tr>
   </table>
   <div id="player-2">
@@ -31,9 +31,9 @@
   </div>
   <div id="message"></div>
   <div id="player">
-    <div id="player-card-1" class="card"></div>
-    <div id="player-card-2" class="card"></div>
-    <div id="player-card-3" class="card"></div>
+    <div id="player-card-1" class="card" ng-click="playCard(0);"></div>
+    <div id="player-card-2" class="card" ng-click="playCard(1);"></div>
+    <div id="player-card-3" class="card" ng-click="playCard(2);"></div>
   </div>
 </div>
 

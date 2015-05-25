@@ -2,8 +2,8 @@ var cardClass = require('./card.js');
 
 module.exports.Deck = Deck = function(){
   this.cardFamilies = [0, 1, 2, 3];
-  this.cardPeople = [0, 1, 2, 3, 4, 5, 6, 7];
-  this.cards = Array();
+  this.cardPeople = [0, 1, 2, 3, 4, 5];
+  this.cards = [];
 
   for(var f = 0; f < this.cardFamilies.length; f++){
     for(var p = 0; p < this.cardPeople.length; p++){
@@ -11,8 +11,9 @@ module.exports.Deck = Deck = function(){
     }
   }
 
-  this.shuffleCards = function(){
+  this.getShuffledCards = function(count){
     this.cards = shuffleArray(this.cards);
+    this.getCard(count);
   };
 
   this.getCard = function(pQuantity){

@@ -10,21 +10,27 @@ socket.emit('user:bindUserToSocket', userName);
 
 var gameApp = angular.module('gameApp', []);
 gameApp.controller('RoomCtrl', function ($scope) {
-  
+
   socket.emit('room:join', userName);
   socket.on('room:FULL_ROOM', function(){
     console.log("full room");
   });
   socket.on('room:START_GAME', function(playerCards){
-    $("#player-card-1").html(playerCards[0]);
-    $("#player-card-2").html(playerCards[1]);
-    $("#player-card-3").html(playerCards[2]);
+    console.log(playerCards);
+    $("#player-card-1").css('background-image', 'url("/img/cards/' + playerCards[0].v + '_' + playerCards[0].f + '.png")');
+    $("#player-card-1").css('background-image', 'url("/img/cards/' + playerCards[1].v + '_' + playerCards[1].f + '.png")');
+    $("#player-card-1").css('background-image', 'url("/img/cards/' + playerCards[2].v + '_' + playerCards[2].f + '.png")');
   });
   socket.on('room:WAITING_FOR_PLAYERS', function(){
     console.log("waiting player room");
   });
   socket.on('room:PLAYER_LEFT', function(){
     console.log("player left room");
+  });
+  socket.on('room:UPDATE_SCORE', function(score){
+    console.log(score);
+    $scope.score = score;
+    //$scope.$apply;
   });
 
   socket.on('room:YOUR_TURN', function(){
@@ -35,10 +41,9 @@ gameApp.controller('RoomCtrl', function ($scope) {
     $("#message").html("Wait for opponent move  ");
   });
 
-  $(".card").click(function(){
-    var value = $(this).text();
-    socket.emit("room:MOVE", value);
-  });
+  $scope.playCard = function(cardId){
+    socket.emit("room:PLAY_CARD", cardId);
+  };
 
 
 
