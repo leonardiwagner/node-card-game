@@ -4,12 +4,19 @@
     width:30%;
     height:200px;
     float:left;
+    background-size: contain;
+    background-repeat: no-repeat;
 }
 
 #score{
     width: 30%;
     position: absolute;
     right: 0;
+}
+
+#message{
+    float: left;
+    width: 100%;
 }
 
 #table{
@@ -47,6 +54,10 @@
     height: 250px;
     float:left;
 }
+
+    #player .card{
+        cursor: pointer;
+    }
 
 #player-2{
     background-color: yellow;

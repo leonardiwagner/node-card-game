@@ -92,9 +92,9 @@ function RoomSocket(io, socket){
 
   function startGame(){
     setPlayersCards();
-    io.to(room.player1.socketid).emit('room:START_GAME', room.player1.cards);
+    io.to(room.player1.socketid).emit('room:START_GAME', room.player1);
     io.to(room.player1.socketid).emit('room:YOUR_TURN');
-    io.to(room.player2.socketid).emit('room:START_GAME', room.player2.cards);
+    io.to(room.player2.socketid).emit('room:START_GAME', room.player2);
     io.to(room.player2.socketid).emit('room:WAIT_PLAYER_MOVE');
     moves = [];
     io.emit('room:UPDATE_SCORE', score);
@@ -110,7 +110,11 @@ function RoomSocket(io, socket){
       player = room.player2;
       otherPlayer = room.player1;
     }
-    moves.push({"playerid": player.socketid, "card": player.cards[cardId]});
+
+    var move = {"playerid": player.socketid, "card": player.cards[cardId]};
+    moves.push(move);
+
+    io.emit("room:MOVE", move);
 
     io.to(otherPlayer.socketid).emit('room:YOUR_TURN');
     io.to(player.socketid).emit('room:WAIT_PLAYER_MOVE');
@@ -124,7 +128,7 @@ function RoomSocket(io, socket){
       var winningPlayer = moves[0].playerid;
 
       moves.forEach(function(move){
-        if(move.card > winningCard){
+        if(move.card.v > winningCard.v){
           winningCard = move.card;
           winningPlayer = move.playerid;
         }
